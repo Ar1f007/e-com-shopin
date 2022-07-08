@@ -13,6 +13,7 @@ import {
   Button,
 } from './slider.styles';
 import { sliderItems } from '../../data';
+import { useId } from 'react';
 
 const styles = {
   color: '#f7f7f7',
@@ -20,6 +21,7 @@ const styles = {
 };
 
 export const Slider = () => {
+  const id = useId();
   const [slideIndex, setSlideIndex] = useState(0);
 
   const handleClick = (direction) => {
@@ -38,8 +40,8 @@ export const Slider = () => {
       </Arrow>
 
       <Wrapper slideIndex={slideIndex}>
-        {sliderItems.map((slide) => (
-          <Slide bg={slide.bg}>
+        {sliderItems.map((slide, i) => (
+          <Slide key={`${id}-${i}`} bg={slide.bg}>
             <ImageContainer>
               <Image src={slide.img} />
             </ImageContainer>
