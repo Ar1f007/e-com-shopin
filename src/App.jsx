@@ -1,8 +1,8 @@
-import { Home, ProductList } from './pages';
+import { Home, Register, ProductList, Product, Login } from './pages';
 
 const App = () => {
   // return <Home />;
-  return <ProductList />;
+  return <Login />;
 };
 
 export default App;

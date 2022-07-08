@@ -34,7 +34,7 @@ export const Navbar = () => {
           <MenuItem>Register</MenuItem>
           <MenuItem>Sign In</MenuItem>
           <MenuItem>
-            <Badge>
+            <Badge badgeContent={4} color="primary">
               <ShoppingCartOutlined />
             </Badge>
           </MenuItem>
