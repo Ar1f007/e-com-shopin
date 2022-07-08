@@ -1,4 +1,12 @@
-import { Announcement, Categories, Navbar, Products, Slider, Newsletter } from '../components';
+import {
+  Announcement,
+  Categories,
+  Navbar,
+  Products,
+  Slider,
+  Newsletter,
+  Footer,
+} from '../components';
 
 export const Home = () => {
   return (
@@ -9,6 +17,7 @@ export const Home = () => {
       <Categories />
       <Products />
       <Newsletter />
+      <Footer />
     </div>
   );
 };
