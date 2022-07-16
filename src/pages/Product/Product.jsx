@@ -24,7 +24,7 @@ import { Add, Remove } from '@material-ui/icons';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { publicRequest } from '../../config/axios';
-import { addProduct } from '../../redux/cart';
+import { addProduct } from '../../redux/cartSlice';
 
 import { useDispatch } from 'react-redux';
 

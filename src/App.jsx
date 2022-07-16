@@ -1,8 +1,10 @@
 import { Home, Register, ProductList, Product, Login, Cart, Success } from './pages';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const App = () => {
-  const user = true;
+  const user = useSelector((state) => state.user.currentUser);
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
