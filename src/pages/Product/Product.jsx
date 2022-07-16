@@ -21,8 +21,44 @@ import {
 } from './product.styles';
 
 import { Add, Remove } from '@material-ui/icons';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { publicRequest } from '../../config/axios';
+import { addProduct } from '../../redux/cart';
+
+import { useDispatch } from 'react-redux';
 
 export const Product = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState();
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState('');
+  const [size, setSize] = useState('');
+  const dispatch = useDispatch();
+
+  const handleQuantity = (type) => {
+    if (type === 'inc') {
+      setQuantity((prev) => prev + 1);
+    } else if (type === 'dec') {
+      quantity > 1 && setQuantity((prev) => prev - 1);
+    }
+  };
+
+  const handleAddToCart = () => {
+    dispatch(addProduct({ ...product, quantity, color, size }));
+  };
+
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await publicRequest.get(`/products/${id}`);
+        setProduct(res.data);
+      } catch (error) {}
+    };
+
+    getProduct();
+  }, [id]);
+
   return (
     <Container>
       <Announcement />
@@ -30,52 +66,39 @@ export const Product = () => {
 
       <Wrapper>
         <ImgContainer>
-          <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
+          <Image src={product?.img} />
         </ImgContainer>
 
         <InfoContainer>
-          <Title>Denim Jumpsuit</Title>
-          <Desc>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit tempore quidem deserunt
-            maiores rem laudantium aliquid porro consectetur cumque eius beatae repudiandae sed,
-            vitae reprehenderit natus illo odio, aspernatur consequuntur aperiam omnis vel dolorum
-            esse. Repellat sint quos neque molestias doloribus dolorem obcaecati velit quam
-            veritatis saepe. Beatae atque ex accusantium quos quod consequuntur quidem corporis
-            laborum, delectus, natus sint? Omnis, repellendus doloribus. Repudiandae unde amet
-            commodi eligendi eveniet. Exercitationem minus iste nihil laudantium nostrum quos animi
-            hic natus eum magnam laboriosam dicta doloremque quod eveniet eius, cupiditate aperiam
-            quasi distinctio! Fugit veniam voluptates nesciunt praesentium tempora odio perspiciatis
-            sequi!
-          </Desc>
-          <Price>$ 20</Price>
+          <Title>{product?.title}</Title>
+          <Desc>{product?.desc}</Desc>
+          <Price>$ {product?.price}</Price>
 
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="gray" />
+              {product?.color.map((c) => (
+                <FilterColor color={c} key={c} onClick={() => setColor(c)} />
+              ))}
             </Filter>
 
             <Filter>
               <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>XL</FilterSizeOption>
+              <FilterSize onChange={(e) => setSize(e.target.value)}>
+                {product?.size.map((s) => (
+                  <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                ))}
               </FilterSize>
             </Filter>
           </FilterContainer>
 
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove onClick={() => handleQuantity('dec')} />
+              <Amount>{quantity}</Amount>
+              <Add onClick={() => handleQuantity('inc')} />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick={handleAddToCart}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>

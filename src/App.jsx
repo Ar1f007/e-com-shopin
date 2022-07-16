@@ -1,5 +1,6 @@
-import { Home, Register, ProductList, Product, Login, Cart } from './pages';
+import { Home, Register, ProductList, Product, Login, Cart, Success } from './pages';
 import { Routes, Route, Navigate } from 'react-router-dom';
+
 const App = () => {
   const user = true;
   return (
@@ -11,6 +12,7 @@ const App = () => {
 
       <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
       <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
+      <Route path="/success" element={<Success />} />
     </Routes>
   );
 };
