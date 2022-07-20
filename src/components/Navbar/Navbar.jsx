@@ -42,7 +42,7 @@ export const Navbar = () => {
         <Right>
           {user ? (
             <>
-              <Link to="/order" style={{ color: 'rgba(0,0,0,.8)', textDecoration: 'none' }}>
+              <Link to="/orders" style={{ color: 'rgba(0,0,0,.8)', textDecoration: 'none' }}>
                 <MenuItem>My order</MenuItem>
               </Link>
               <MenuItem onClick={() => dispatch(logout())}>Logout</MenuItem>
