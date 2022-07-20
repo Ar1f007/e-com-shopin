@@ -23,7 +23,6 @@ import {
   SummaryTitle,
   Title,
   Top,
-  TopButton,
   TopText,
   TopTexts,
   Wrapper,
@@ -34,17 +33,35 @@ import { useSelector } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import { useEffect, useState } from 'react';
 import { userRequest } from '../../config/axios';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { clearCart } from '../../redux/cartSlice';
+import { useDispatch } from 'react-redux';
 
 const KEY = process.env.REACT_APP_STRIPE_KEY;
+
 export const Cart = () => {
+  const [products, setProducts] = useState([]);
+  const user = useSelector((state) => state.user.currentUser);
+
   const cart = useSelector((state) => state.cart);
   const [stripeToken, setStripeToken] = useState('');
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
   const onToken = (token) => {
     setStripeToken(token);
   };
+
+  useEffect(() => {
+    const products = cart?.products.map((product) => ({
+      productId: product._id,
+      quantity: product.quantity,
+    }));
+
+    setProducts(products);
+  }, [cart]);
 
   useEffect(() => {
     const makeRequest = async () => {
@@ -53,12 +70,25 @@ export const Cart = () => {
           tokenId: stripeToken.id,
           amount: cart.total * 100,
         });
-        navigate('/success', { state: res.data });
+
+        await userRequest.post('/orders', {
+          userId: user._id,
+          amount: cart.total,
+          address: res.data.billing_details.address,
+          products: products,
+        });
+
+        dispatch(clearCart());
+        navigate('/orders');
       } catch (error) {}
     };
 
     stripeToken && makeRequest();
-  }, [stripeToken, cart.total, navigate]);
+  }, [stripeToken, cart.total, navigate, user, products, dispatch]);
+
+  if (!user) {
+    return <Navigate to="/login" replace state={{ path: location.pathname }} />;
+  }
   return (
     <Container>
       <Navbar />
@@ -66,18 +96,16 @@ export const Cart = () => {
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
           <TopTexts>
             <TopText>Shopping Bag(2)</TopText>
             <TopText>Your Wishlist (0)</TopText>
           </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
             {cart?.products?.map((product) => (
               <>
-                <Product>
+                <Product key={product._id}>
                   <ProductDetail>
                     <Image src={product.img} />
                     <Details>
@@ -116,10 +144,7 @@ export const Cart = () => {
               <SummaryItemText>Estimated Shipping</SummaryItemText>
               <SummaryItemPrice>$ 5.90</SummaryItemPrice>
             </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
-            </SummaryItem>
+
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>

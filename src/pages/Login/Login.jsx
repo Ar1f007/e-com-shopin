@@ -1,22 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/api';
 import { Container, Form, Input, Title, Wrapper, Button, Error, Box } from './login.styles';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 export const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const { state } = useLocation();
   const { isFetching, error } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
 
     if (!username || !password) return;
-
     login(dispatch, { username, password });
+    navigate(state?.path || '/');
   };
+
   return (
     <Container>
       <Wrapper>

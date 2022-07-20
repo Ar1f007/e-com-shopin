@@ -1,4 +1,4 @@
-import { Home, Register, ProductList, Product, Login, Cart, Success } from './pages';
+import { Home, Register, ProductList, Product, Login, Cart, Orders } from './pages';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -14,7 +14,7 @@ const App = () => {
 
       <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
       <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
-      <Route path="/success" element={<Success />} />
+      <Route path="/orders" element={<Orders />} />
     </Routes>
   );
 };
