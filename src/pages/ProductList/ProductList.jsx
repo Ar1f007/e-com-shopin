@@ -14,7 +14,7 @@ import { useState } from 'react';
 export const ProductList = () => {
   const { category } = useParams();
   const [filters, setFilters] = useState({});
-  const [sort, setSort] = useState('newest');
+  // const [sort, setSort] = useState('newest');
 
   const handleFilters = (e) => {
     const value = e.target.value;
@@ -52,7 +52,7 @@ export const ProductList = () => {
             <Option>XL</Option>
           </Select>
         </Filter>
-        <Filter>
+        {/* <Filter>
           <FilterText>Sort products:</FilterText>
 
           <Select name="sort" onChange={(e) => setSort(e.target.value)}>
@@ -60,10 +60,10 @@ export const ProductList = () => {
             <Option value="asc">Price (asc)</Option>
             <Option value="desc">Price (desc)</Option>
           </Select>
-        </Filter>
+        </Filter> */}
       </FilterContainer>
 
-      <Products category={category} filters={filters} sort={sort} />
+      <Products category={category} filters={filters} />
       <Footer />
     </Container>
   );

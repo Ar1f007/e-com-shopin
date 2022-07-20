@@ -1,19 +1,56 @@
-import { Button, Container, Form, Input, Title, Wrapper } from './register.styles';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  Button,
+  Container,
+  Form,
+  Input,
+  Title,
+  Wrapper,
+  ButtonContainer,
+  Error,
+} from './register.styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../../redux/api';
 
 export const Register = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [cPassword, setCPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const { isFetching, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+
+    if (password !== cPassword) {
+      alert('passwords must match');
+      return;
+    }
+
+    register(dispatch, { username, email, password });
+  };
+
   return (
     <Container>
       <Wrapper>
+        {error && <Error>Something went wrong</Error>}
         <Title>CREATE AN ACCOUNT</Title>
         <Form>
-          <Input placeholder="name" />
-          <Input placeholder="last name" />
-          <Input placeholder="username" />
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <Input placeholder="confirm password" />
+          <Input required placeholder="username" onChange={(e) => setUsername(e.target.value)} />
+          <Input required placeholder="email" onChange={(e) => setEmail(e.target.value)} />
+          <Input required placeholder="password" onChange={(e) => setPassword(e.target.value)} />
+          <Input
+            required
+            placeholder="confirm password"
+            onChange={(e) => setCPassword(e.target.value)}
+          />
 
-          <Button>CREATE</Button>
+          <ButtonContainer>
+            <Button onClick={handleClick}>{isFetching ? 'Creating...' : 'Create'}</Button>
+            <Link to="/login">Login</Link>
+          </ButtonContainer>
         </Form>
       </Wrapper>
     </Container>

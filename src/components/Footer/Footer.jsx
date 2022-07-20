@@ -13,12 +13,15 @@ import {
   Payment,
 } from './footer.styles';
 import { Facebook, Instagram, MailOutline, Phone, Room, Twitter } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   return (
     <Container>
       <Left>
-        <Logo>Arif</Logo>
+        <Link to="/" style={{ color: 'rgba(0,0,0,.8)', textDecoration: 'none' }}>
+          <Logo>shopin</Logo>
+        </Link>
 
         <SocialContainer>
           <SocialIcon color="#3b5999">

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/api';
-import { Container, Form, Input, Title, Wrapper, Button, Link, Error } from './login.styles';
+import { Container, Form, Input, Title, Wrapper, Button, Error, Box } from './login.styles';
+import { Link } from 'react-router-dom';
 
 export const Login = () => {
   const [username, setUsername] = useState('');
@@ -19,11 +20,12 @@ export const Login = () => {
   return (
     <Container>
       <Wrapper>
-        {error && <Error>Something went wrong</Error>}
-        <Title>SIGN IN</Title>
+        {error ? <Error>Invalid credentials</Error> : null}
+        <Title>LOG IN</Title>
         <Form>
-          <Input placeholder="username" onChange={(e) => setUsername(e.target.value)} />
+          <Input required placeholder="username" onChange={(e) => setUsername(e.target.value)} />
           <Input
+            required
             type="password"
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -31,8 +33,27 @@ export const Login = () => {
           <Button onClick={handleClick} disabled={isFetching}>
             {isFetching ? 'Login...' : 'Login'}
           </Button>
-          <Link>FORGOT THE PASSWORD?</Link>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          <Box>
+            <Link
+              to="/register"
+              style={{
+                fontSize: '12px',
+                color: '#000',
+              }}
+            >
+              CREATE A NEW ACCOUNT
+            </Link>
+
+            <Link
+              to="/"
+              style={{
+                fontSize: '12px',
+                color: '#000',
+              }}
+            >
+              Home
+            </Link>
+          </Box>
         </Form>
       </Wrapper>
     </Container>

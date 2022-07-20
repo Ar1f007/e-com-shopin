@@ -46,5 +46,35 @@ export const Button = styled.button`
   background-color: teal;
   color: white;
   cursor: pointer;
+  display: inline-block;
+`;
+export const ButtonContainer = styled.div`
   margin-top: 20px;
+
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  ${mobile({
+    flexDirection: 'column',
+  })}
+
+  a {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.8);
+
+    :hover {
+      text-decoration: underline;
+    }
+
+    ${mobile({
+      marginTop: '10px',
+    })}
+  }
+`;
+
+export const Error = styled.span`
+  color: #ef4444;
+  margin-bottom: 0.8rem;
 `;

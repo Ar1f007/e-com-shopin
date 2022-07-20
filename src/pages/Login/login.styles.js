@@ -64,3 +64,9 @@ export const Error = styled.span`
   color: #ef4444;
   margin-bottom: 0.8rem;
 `;
+
+export const Box = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
